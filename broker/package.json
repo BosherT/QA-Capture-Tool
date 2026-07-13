@@ -1,0 +1,19 @@
+{
+  "name": "qa-capture-hosted-broker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "check": "node --check src/server.js",
+    "db:migrate": "node scripts/migrate.js",
+    "db:status": "node scripts/db-status.js",
+    "token-key:generate": "node scripts/generate-token-key.js",
+    "tokens:reencrypt": "node scripts/reencrypt-tokens.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pg": "^8.12.0"
+  },
+  "devDependencies": {}
+}

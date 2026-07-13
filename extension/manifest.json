@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "QA Capture Board",
+  "description": "Capture a page, annotate issues, and prepare Jira Cloud bug reports.",
+  "version": "0.1.0",
+  "action": {
+    "default_title": "Capture QA issue",
+    "default_popup": "popup.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://*.atlassian.net/*",
+    "http://127.0.0.1:8787/*",
+    "http://localhost:8787/*"
+  ]
+}

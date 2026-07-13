@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QA Capture Settings</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="settings-body">
+  <main class="settings-page">
+    <header class="settings-header">
+      <div class="brand-row">
+        <div class="brand-mark">QC</div>
+        <div>
+          <h1>QA Capture Settings</h1>
+          <p>Set the Jira defaults used when creating QA issues.</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="settings-panel">
+      <h2>Connector</h2>
+      <div class="field">
+        <label for="backendUrlInput">Connector URL</label>
+        <input id="backendUrlInput" value="http://127.0.0.1:8787">
+      </div>
+      <div class="field">
+        <label for="jiraSiteInput">Jira site</label>
+        <input id="jiraSiteInput" placeholder="https://your-site.atlassian.net">
+      </div>
+      <div class="settings-actions">
+        <button id="testConnectorBtn">Test connector</button>
+        <button id="connectJiraBtn">Connect Jira</button>
+        <button id="disconnectJiraBtn" class="danger">Disconnect Jira</button>
+        <button id="openCaptureBtn">Open capture board</button>
+      </div>
+      <p id="connectorStatus" class="status">Connector has not been checked yet.</p>
+    </section>
+
+    <section class="settings-panel">
+      <h2>Jira Defaults</h2>
+      <div class="row">
+        <div class="field">
+          <label for="projectInput">Project key</label>
+          <input id="projectInput" placeholder="AUTOTEST">
+        </div>
+        <div class="field">
+          <label for="issueTypeInput">Issue type</label>
+          <select id="issueTypeInput">
+            <option>Task</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="priorityInput">Priority</label>
+          <select id="priorityInput">
+            <option>Medium</option>
+            <option>Low</option>
+            <option>High</option>
+            <option>Highest</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="parentIssueInput">Parent issue key</label>
+          <input id="parentIssueInput" placeholder="Optional default">
+        </div>
+      </div>
+      <div class="field">
+        <label for="assigneeInput">Assignee</label>
+        <input id="assigneeInput" list="assigneeOptions" placeholder="Unassigned">
+        <datalist id="assigneeOptions"></datalist>
+      </div>
+      <div class="settings-actions">
+        <button id="loadIssueTypesBtn">Load issue types</button>
+        <button id="saveSettingsBtn" class="primary">Save settings</button>
+      </div>
+      <p id="settingsStatus" class="status">Saved defaults will appear automatically on the capture board.</p>
+    </section>
+  </main>
+  <script src="options.js"></script>
+</body>
+</html>

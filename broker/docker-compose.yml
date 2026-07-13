@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: qa-capture-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: qa_capture
+      POSTGRES_USER: qa_capture
+      POSTGRES_PASSWORD: qa_capture
+    ports:
+      - "5432:5432"
+    volumes:
+      - qa_capture_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U qa_capture -d qa_capture"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  qa_capture_postgres_data:

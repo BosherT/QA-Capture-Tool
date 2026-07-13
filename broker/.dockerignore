@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+.env
+.env.*
+docker-compose.yml
+README.md
+DEPLOYMENT*.md
+package-lock.json.tmp

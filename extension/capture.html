@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QA Capture Board</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand-row">
+        <div class="brand-mark">QC</div>
+        <div>
+          <h1>QA Capture Board</h1>
+          <p id="captureSubtitle">Annotate the captured page and prepare a Jira Cloud issue.</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button id="recaptureBtn">Recapture tab</button>
+        <button id="settingsBtn">Settings</button>
+        <button id="exportPngBtn">PNG</button>
+      </div>
+    </header>
+
+    <aside class="left">
+      <section class="section">
+        <h2>Annotate</h2>
+        <div class="tool-grid" role="toolbar" aria-label="Annotation tools">
+          <button class="tool" data-tool="select" title="Select">Select</button>
+          <button class="tool active" data-tool="rect" title="Box">Box</button>
+          <button class="tool" data-tool="pin" title="Pin">Pin</button>
+          <button class="tool" data-tool="arrow" title="Arrow">Arrow</button>
+          <button class="tool" data-tool="pen" title="Pen">Pen</button>
+          <button class="tool" data-tool="highlight" title="Highlight">Highlight</button>
+          <button class="tool" data-tool="text" title="Text callout">Text</button>
+          <button id="deleteSelectedBtn" title="Delete selected">Delete</button>
+          <button id="undoBtn" title="Undo">Undo</button>
+          <button class="danger fill-row" id="clearBtn" title="Clear annotations">Clear annotations</button>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Color</h2>
+        <div class="swatches" id="swatches"></div>
+      </section>
+
+      <section class="section">
+        <h2>Issue Details</h2>
+        <div class="field">
+          <label for="summaryInput">Summary</label>
+          <input id="summaryInput" placeholder="Checkout CTA overlaps total">
+        </div>
+        <div class="field">
+          <label for="descriptionInput">Description</label>
+          <div class="editor-toolbar" aria-label="Description formatting">
+            <button type="button" data-editor-command="bold" title="Bold">Bold</button>
+            <button type="button" data-editor-command="underline" title="Underline">Underline</button>
+            <button type="button" data-editor-command="insertUnorderedList" title="Bullet list">Bullets</button>
+            <button type="button" data-editor-command="insertOrderedList" title="Numbered list">Numbers</button>
+          </div>
+          <div id="descriptionEditor" class="rich-editor" contenteditable="true" role="textbox" aria-multiline="true" data-placeholder="Describe the issue and what should happen instead."></div>
+          <textarea id="descriptionInput" class="hidden" tabindex="-1"></textarea>
+        </div>
+        <button id="addIssueBtn" class="primary full">Add issue</button>
+      </section>
+    </aside>
+
+    <main>
+      <div class="canvas-toolbar">
+        <div class="meta" id="imageMeta">Loading capture...</div>
+        <div class="zoom-controls">
+          <button class="icon" id="zoomOutBtn" title="Zoom out">-</button>
+          <span id="zoomLabel">100%</span>
+          <button class="icon" id="zoomInBtn" title="Zoom in">+</button>
+        </div>
+      </div>
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="imageCanvas" width="1120" height="680"></canvas>
+          <canvas id="drawCanvas" width="1120" height="680"></canvas>
+          <div class="empty-state" id="emptyState">
+            <div>
+              <h2>No capture loaded</h2>
+              <p>Use the extension popup on a browser tab to capture a page.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <aside class="right">
+      <section class="section">
+        <h2>Page Context</h2>
+        <div class="field">
+          <label for="urlInput">Page URL</label>
+          <input id="urlInput">
+        </div>
+        <div class="field">
+          <label for="titleInput">Page Title</label>
+          <input id="titleInput">
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="browserInput">Browser</label>
+            <input id="browserInput">
+          </div>
+          <div class="field">
+            <label for="viewportInput">Viewport</label>
+            <input id="viewportInput">
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <h2>Jira Cloud</h2>
+          <button id="connectJiraBtn" class="compact">Connect Jira</button>
+        </div>
+        <div class="field">
+          <label for="backendUrlInput">Connector URL</label>
+          <input id="backendUrlInput" value="http://127.0.0.1:8787">
+        </div>
+        <div class="field">
+          <label for="jiraSiteInput">Site</label>
+          <input id="jiraSiteInput" placeholder="https://your-site.atlassian.net">
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="projectInput">Project key</label>
+            <input id="projectInput" list="projectOptions" placeholder="Search project">
+            <datalist id="projectOptions"></datalist>
+          </div>
+          <div class="field">
+            <label for="issueTypeInput">Issue type</label>
+            <select id="issueTypeInput">
+              <option>Task</option>
+            </select>
+          </div>
+        </div>
+        <div class="field" id="parentIssueField">
+          <label for="parentIssueInput">Parent issue key</label>
+          <input id="parentIssueInput" list="parentIssueOptions" placeholder="Search parent issue">
+          <datalist id="parentIssueOptions"></datalist>
+        </div>
+        <div class="field">
+          <label for="assigneeInput">Assignee</label>
+          <input id="assigneeInput" list="assigneeOptions" placeholder="Unassigned">
+          <datalist id="assigneeOptions"></datalist>
+        </div>
+        <div class="field">
+          <label for="priorityInput">Priority</label>
+          <select id="priorityInput">
+            <option>Medium</option>
+            <option>Low</option>
+            <option>High</option>
+            <option>Highest</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="extraAttachmentInput">Extra attachments</label>
+          <input id="extraAttachmentInput" type="file" multiple>
+          <div id="extraAttachmentList" class="attachment-list"></div>
+        </div>
+        <div id="dynamicJiraFields"></div>
+        <div id="jiraPreviewPanel" class="jira-preview">
+          <div class="preview-heading">
+            <strong>Jira preview</strong>
+            <span id="jiraPreviewAttachment">Screenshot attached</span>
+          </div>
+          <dl>
+            <dt>Summary</dt>
+            <dd id="jiraPreviewSummary">Untitled bug</dd>
+            <dt>Target</dt>
+            <dd id="jiraPreviewTarget">Project not selected</dd>
+            <dt>Description</dt>
+            <dd id="jiraPreviewDescription">No description added</dd>
+          </dl>
+          <div id="jiraValidationList" class="validation-list"></div>
+        </div>
+        <button id="createJiraIssueBtn" class="primary full">Create Jira issue</button>
+        <div id="createdIssuePanel" class="success-panel hidden">
+          <div>
+            <strong id="createdIssueKey">Issue created</strong>
+            <span id="createdIssueUrl"></span>
+          </div>
+          <div class="success-actions">
+            <button id="copyCreatedIssueKeyBtn" class="full">Copy key</button>
+            <button id="clearIssuesBtn" class="full">Clear issues</button>
+          </div>
+          <button id="openCreatedIssueBtn" class="full">Open issue</button>
+        </div>
+        <p id="jiraStatus" class="status">Start the local Jira connector, then connect Jira.</p>
+      </section>
+
+      <section class="section">
+        <h2>Issues</h2>
+        <div class="issue-list" id="issueList"></div>
+      </section>
+    </aside>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="capture.js"></script>
+</body>
+</html>
