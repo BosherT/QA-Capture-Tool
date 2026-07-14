@@ -64,7 +64,7 @@ export function createAuthRouter({ config, oauth, tokenStore }) {
       const sites = await oauth.fetchAccessibleResources(tokenSet.access_token);
       await tokenStore.saveTokenSet(storedState.sessionId, tokenSet, sites);
 
-      res.type("html").send("<h1>Jira connected</h1><p>You can close this tab and return to QA Capture.</p>");
+      res.type("html").send("<h1>Jira connected</h1><p>You can close this tab and return to Pinpoint.</p>");
     } catch (error) {
       next(error);
     }

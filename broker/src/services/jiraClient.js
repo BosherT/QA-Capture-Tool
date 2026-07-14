@@ -205,7 +205,7 @@ export function createJiraClient(config, oauth, tokenStore) {
       for (const attachment of attachments) {
         if (!attachment?.dataUrl) continue;
         const form = new FormData();
-        form.append("file", dataUrlToBlob(attachment.dataUrl), attachment.filename || "qa-capture-attachment");
+        form.append("file", dataUrlToBlob(attachment.dataUrl), attachment.filename || "pinpoint-attachment");
         await jiraFetchForSite(connection, site, `/rest/api/3/issue/${issue.key}/attachments`, {
           method: "POST",
           headers: { "X-Atlassian-Token": "no-check" },

@@ -568,7 +568,7 @@ function archiveCurrentScreenshotAttachment() {
   const stepNumber = state.captureStepCount;
   const attachment = {
     id: crypto.randomUUID(),
-    filename: `qa-capture-step-${stepNumber}.png`,
+    filename: `pinpoint-step-${stepNumber}.png`,
     contentType: "image/png",
     size: dataUrlSize(dataUrl),
     dataUrl,
@@ -767,7 +767,7 @@ function buildJiraPayload() {
     priority: { name: fields.priority.value },
     summary: primaryIssue.summary,
     description: buildReportAdf(),
-    labels: ["qa-capture"]
+    labels: ["pinpoint"]
   };
   const parentKey = fields.parentIssue.value.trim();
   if (parentKey) jiraFields.parent = { key: parentKey };
@@ -1359,7 +1359,7 @@ async function createJiraIssue() {
 
 function exportPng() {
   const link = document.createElement("a");
-  link.download = `qa-capture-${Date.now()}.png`;
+  link.download = `pinpoint-${Date.now()}.png`;
   link.href = annotatedPngDataUrl();
   link.click();
 }

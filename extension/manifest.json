@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "QA Capture Board",
+  "name": "Pinpoint",
   "description": "Capture a page, annotate issues, and prepare Jira Cloud bug reports.",
   "version": "0.1.0",
   "action": {

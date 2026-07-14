@@ -1,6 +1,6 @@
 # Hosted Broker Deployment Checklist
 
-This is the provider-neutral deployment checklist for the QA Capture hosted broker. It is intentionally generic so the broker can move between Azure, Render, Railway, internal infrastructure, or another container host without code changes.
+This is the provider-neutral deployment checklist for the Pinpoint Hosted Broker. It is intentionally generic so the broker can move between Azure, Render, Railway, internal infrastructure, or another container host without code changes.
 
 ## Required Runtime
 

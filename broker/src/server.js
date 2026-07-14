@@ -34,11 +34,11 @@ app.get("/", (req, res) => {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>QA Capture Hosted Broker</title>
+  <title>Pinpoint Hosted Broker</title>
 </head>
 <body>
   <main>
-    <h1>QA Capture Hosted Broker</h1>
+    <h1>Pinpoint Hosted Broker</h1>
     <p>Broker is running at <code>${config.publicBaseUrl}</code>.</p>
     <p>Token store: <code>${tokenStore.mode}</code></p>
     <p><a href="/health">Health</a> | <a href="/auth/status">Auth status</a> | <a href="/auth/start">Connect Jira</a></p>
@@ -64,7 +64,7 @@ app.use((error, req, res, next) => {
 
 app.listen(config.port, () => {
   console.log("");
-  console.log("QA Capture hosted broker is running.");
+  console.log("Pinpoint Hosted Broker is running.");
   console.log(`URL: ${config.publicBaseUrl}`);
   console.log(`Callback: ${config.atlassian.redirectUri}`);
   console.log(`Token store: ${tokenStore.mode}`);
