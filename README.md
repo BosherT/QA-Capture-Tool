@@ -1,6 +1,6 @@
-# QA Capture Tool
+# Pinpoint
 
-QA Capture Tool is a browser extension and Jira Cloud broker for logging QA issues from the page being tested. It lets a tester capture the visible viewport, annotate the screenshot, add a description, and create a Jira issue with the marked-up screenshots attached.
+Pinpoint is a browser extension and Jira Cloud broker for logging QA issues from the page being tested. It lets a tester capture the visible viewport, annotate the screenshot, add a description, and create a Jira issue with the marked-up screenshots attached.
 
 The project is intended to replace an unsupported paid screenshot-to-Jira browser extension with an internally controlled workflow.
 

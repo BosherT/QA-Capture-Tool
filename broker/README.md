@@ -1,4 +1,4 @@
-# QA Capture Hosted Broker
+# Pinpoint Hosted Broker
 
 This is the first hosted-service scaffold for replacing the local Jira connector. It keeps the same route shape as the local connector, but is structured for deployment and database-backed token storage.
 

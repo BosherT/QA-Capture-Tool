@@ -12,13 +12,13 @@ Atlassian OAuth 2.0 for Jira Cloud requires a `client_secret` when exchanging an
 - Token persistence
 - Jira Cloud REST API calls
 
-The extension should only talk to the hosted QA Capture API.
+The extension should only talk to the hosted Pinpoint API.
 
 ## Target Shape
 
 ```mermaid
 flowchart LR
-  A["Browser extension"] --> B["Hosted QA Capture API"]
+  A["Browser extension"] --> B["Hosted Pinpoint API"]
   B --> C["Atlassian OAuth"]
   B --> D["Jira Cloud REST API"]
   B --> E["Token store"]
@@ -48,9 +48,9 @@ This keeps the extension migration small: the `Connector URL` changes from `http
 1. User clicks `Connect Jira` in the extension.
 2. Extension requests a broker session token from `POST /auth/session`.
 3. Extension stores that opaque session token locally.
-4. Extension opens `https://qa-capture-api.example.com/auth/start?session=...`.
+4. Extension opens `https://pinpoint-api.example.com/auth/start?session=...`.
 5. Hosted API redirects to Atlassian OAuth.
-6. Atlassian redirects to `https://qa-capture-api.example.com/auth/callback`.
+6. Atlassian redirects to `https://pinpoint-api.example.com/auth/callback`.
 7. Hosted API exchanges the authorization code using the server-side client secret.
 8. Hosted API calls Atlassian `accessible-resources` to identify Jira sites and cloud IDs.
 9. Hosted API stores encrypted token data against the broker session.
@@ -121,6 +121,6 @@ Before production use, the hosted service should include:
 
 - Hosting provider: Azure, AWS, Cloudflare, Vercel, Render, or internal infrastructure.
 - Database: Postgres is the likely default.
-- Identity model: Atlassian-only identity vs separate QA Capture user accounts.
+- Identity model: Atlassian-only identity vs separate Pinpoint user accounts.
 - Whether screenshots should pass through the hosted service or be uploaded directly through a short-lived upload flow.
 - Whether this remains internal-only or becomes distributable to other teams.

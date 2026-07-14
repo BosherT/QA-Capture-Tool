@@ -6,7 +6,7 @@ export function createHealthRouter({ config, tokenStore }) {
   router.get("/", (req, res) => {
     res.json({
       ok: true,
-      service: "qa-capture-hosted-broker",
+      service: "pinpoint-hosted-broker",
       version: "0.1.0",
       publicBaseUrl: config.publicBaseUrl,
       tokenStore: tokenStore.mode
