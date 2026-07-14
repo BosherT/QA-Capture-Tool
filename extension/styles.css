@@ -51,6 +51,69 @@ button.active { border-color: var(--accent); background: #e2f3f1; color: var(--a
 .settings-panel h2 { font-size: 12px; line-height: 1.2; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 12px; }
 .settings-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 4px; }
 .settings-actions button { min-width: 132px; }
+.connection-panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 13px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfc;
+  padding: 10px;
+}
+.connection-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+  min-width: 0;
+}
+.connection-item strong {
+  display: block;
+  font-size: 12px;
+  line-height: 1.2;
+}
+.connection-item span:last-child {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.connection-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  margin-top: 3px;
+  background: #c8d2d6;
+  box-shadow: 0 0 0 3px rgba(200, 210, 214, .25);
+}
+.connection-dot.success { background: #059669; box-shadow: 0 0 0 3px rgba(5, 150, 105, .14); }
+.connection-dot.error { background: #dc2626; box-shadow: 0 0 0 3px rgba(220, 38, 38, .13); }
+.connection-details {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 2px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+.connection-details div { min-width: 0; }
+.connection-details dt {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: .04em;
+  margin: 0 0 3px;
+  text-transform: uppercase;
+}
+.connection-details dd {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
 
 .app {
   min-height: 100vh;

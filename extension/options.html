@@ -34,6 +34,36 @@
         <button id="disconnectJiraBtn" class="danger">Disconnect Jira</button>
         <button id="openCaptureBtn">Open capture board</button>
       </div>
+      <div class="connection-panel" aria-live="polite">
+        <div class="connection-item" id="brokerConnectionItem">
+          <span class="connection-dot unknown"></span>
+          <div>
+            <strong>Broker</strong>
+            <span id="brokerStatusText">Not checked</span>
+          </div>
+        </div>
+        <div class="connection-item" id="jiraConnectionItem">
+          <span class="connection-dot unknown"></span>
+          <div>
+            <strong>Jira</strong>
+            <span id="jiraStatusText">Not checked</span>
+          </div>
+        </div>
+        <dl class="connection-details">
+          <div>
+            <dt>Connector URL</dt>
+            <dd id="connectorUrlText">Not set</dd>
+          </div>
+          <div>
+            <dt>Jira site</dt>
+            <dd id="jiraSiteText">Not set</dd>
+          </div>
+          <div>
+            <dt>Auth mode</dt>
+            <dd id="authModeText">Unknown</dd>
+          </div>
+        </dl>
+      </div>
       <p id="connectorStatus" class="status">Connector has not been checked yet.</p>
     </section>
 

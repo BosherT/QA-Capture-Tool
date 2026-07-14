@@ -11,12 +11,23 @@ const fields = {
 const connectorStatus = document.getElementById("connectorStatus");
 const settingsStatus = document.getElementById("settingsStatus");
 const assigneeOptions = document.getElementById("assigneeOptions");
+const statusPanel = {
+  brokerItem: document.getElementById("brokerConnectionItem"),
+  brokerText: document.getElementById("brokerStatusText"),
+  jiraItem: document.getElementById("jiraConnectionItem"),
+  jiraText: document.getElementById("jiraStatusText"),
+  connectorUrl: document.getElementById("connectorUrlText"),
+  jiraSite: document.getElementById("jiraSiteText"),
+  authMode: document.getElementById("authModeText")
+};
 const qaIssueTypeHints = ["task", "sub-task", "subtask", "bug", "defect", "content", "edit"];
 const excludedIssueTypeHints = ["epic", "project", "initiative", "theme", "portfolio"];
 let assignableUsers = [];
 let connectorState = {
+  brokerReachable: false,
   connected: false,
-  authMode: null
+  authMode: null,
+  siteUrl: ""
 };
 let connectorPollId = null;
 
@@ -84,6 +95,41 @@ function setStatus(element, message, kind = "") {
   if (kind) element.classList.add(kind);
 }
 
+function setConnectionState(item, state) {
+  const dot = item.querySelector(".connection-dot");
+  item.classList.remove("success", "error", "unknown");
+  dot.classList.remove("success", "error", "unknown");
+  item.classList.add(state);
+  dot.classList.add(state);
+}
+
+function updateStatusPanel() {
+  const baseUrl = backendBaseUrl();
+  const siteUrl = connectorState.siteUrl || fields.jiraSite.value.trim();
+  statusPanel.connectorUrl.textContent = baseUrl || "Not set";
+  statusPanel.jiraSite.textContent = siteUrl || "Not set";
+  statusPanel.authMode.textContent = connectorState.authMode || "Unknown";
+
+  if (connectorState.brokerReachable) {
+    setConnectionState(statusPanel.brokerItem, "success");
+    statusPanel.brokerText.textContent = "Reachable";
+  } else {
+    setConnectionState(statusPanel.brokerItem, "error");
+    statusPanel.brokerText.textContent = "Not reachable";
+  }
+
+  if (connectorState.connected) {
+    setConnectionState(statusPanel.jiraItem, "success");
+    statusPanel.jiraText.textContent = "Connected";
+  } else if (connectorState.brokerReachable) {
+    setConnectionState(statusPanel.jiraItem, "error");
+    statusPanel.jiraText.textContent = "Not connected";
+  } else {
+    setConnectionState(statusPanel.jiraItem, "unknown");
+    statusPanel.jiraText.textContent = "Waiting for broker";
+  }
+}
+
 function replaceSelectOptions(select, values, selectedValue) {
   select.innerHTML = "";
   values.forEach(value => {
@@ -128,6 +174,7 @@ async function loadSettings() {
   if (jiraDefaults.parentIssue) fields.parentIssue.value = jiraDefaults.parentIssue;
   if (jiraDefaults.issueType) replaceSelectOptions(fields.issueType, [jiraDefaults.issueType], jiraDefaults.issueType);
   if (jiraDefaults.priority) fields.priority.value = jiraDefaults.priority;
+  updateStatusPanel();
 }
 
 async function saveSettings() {
@@ -154,18 +201,24 @@ async function testConnector() {
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || "Connector check failed.");
     connectorState = {
+      brokerReachable: true,
       connected: Boolean(data.connected),
-      authMode: data.authMode || null
+      authMode: data.authMode || null,
+      siteUrl: data.sites?.[0]?.url || fields.jiraSite.value.trim()
     };
     if (!fields.jiraSite.value && data.sites?.[0]?.url) fields.jiraSite.value = data.sites[0].url;
+    updateStatusPanel();
     const mode = data.authMode ? ` ${data.authMode} mode.` : "";
     const connected = data.connected ? "Jira connector is ready." : "Connector is running, but Jira is not connected.";
     setStatus(connectorStatus, `${connected}${mode}`, data.connected ? "success" : "error");
   } catch (error) {
     connectorState = {
+      brokerReachable: false,
       connected: false,
-      authMode: null
+      authMode: null,
+      siteUrl: fields.jiraSite.value.trim()
     };
+    updateStatusPanel();
     setStatus(connectorStatus, "Local Jira connector is not running.", "error");
   }
 }
@@ -206,9 +259,12 @@ async function disconnectJira() {
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || "Could not disconnect Jira.");
     connectorState = {
+      brokerReachable: true,
       connected: false,
-      authMode: data.authMode || null
+      authMode: data.authMode || null,
+      siteUrl: fields.jiraSite.value.trim()
     };
+    updateStatusPanel();
     setStatus(connectorStatus, "Jira disconnected. Connect again when you are ready.", "success");
   } catch (error) {
     setStatus(connectorStatus, error.message || "Could not disconnect Jira.", "error");
@@ -262,6 +318,8 @@ document.getElementById("disconnectJiraBtn").addEventListener("click", () => dis
 document.getElementById("loadIssueTypesBtn").addEventListener("click", () => loadIssueTypes().catch(error => setStatus(settingsStatus, error.message, "error")));
 document.getElementById("saveSettingsBtn").addEventListener("click", () => saveSettings().catch(error => setStatus(settingsStatus, error.message, "error")));
 document.getElementById("openCaptureBtn").addEventListener("click", () => chrome.tabs.create({ url: chrome.runtime.getURL("capture.html") }));
+fields.backendUrl.addEventListener("input", updateStatusPanel);
+fields.jiraSite.addEventListener("input", updateStatusPanel);
 fields.assignee.addEventListener("input", debounce(() => searchAssignableUsers().catch(error => setStatus(settingsStatus, error.message, "error"))));
 fields.assignee.addEventListener("focus", () => searchAssignableUsers().catch(error => setStatus(settingsStatus, error.message, "error")));
 window.addEventListener("focus", () => {
